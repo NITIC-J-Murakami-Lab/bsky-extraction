@@ -1,9 +1,39 @@
+"""
+This script performs keyword extraction from posts on the bsky.social platform using the provided query and configuration.
+Modules:
+    - atproto: Provides client and session management for the API.
+    - requests: Used for making HTTP requests to the API.
+    - time: Used for handling time-related operations.
+    - json: Used for handling JSON data.
+    - yaml: Used for handling YAML configuration files.
+    - typing: Provides type hints for better code readability.
+    - pickle: Used for serializing and deserializing Python objects.
+    - argparse: Used for parsing command-line arguments.
+Global Variables:
+    - searchPosts_endpoint (str): The endpoint URL for searching posts.
+CLI Arguments:
+    - query (str): The search query string.
+    - --prefix (str, optional): The prefix for the output files. Defaults to None.
+    - --config (str, optional): The configuration file name. Defaults to "rsimd.yaml".
+    - --limit (int, optional): The maximum number of posts to retrieve per request. Defaults to 100.
+    - --cursor (str, optional): The cursor for pagination. Defaults to None.
+    - --data_root (str, optional): The root directory for saving data. Defaults to "data/".
+Script Execution:
+    - Parses the CLI arguments.
+    - Loads the configuration from the specified YAML file.
+    - Sets up the request headers using the access token from the configuration.
+    - Constructs the search parameters.
+    - Iteratively fetches posts from the API until no more posts are available or an error occurs.
+    - Saves the retrieved posts to JSON files in batches of 1000.
+    - Saves the final batch of posts and the payload with the last cursor to files.
+"""
+
 from atproto import Client, IdResolver, models, SessionEvent, AsyncClient
 import requests
 import time
 import json
 import yaml
-from typing import Any,  Optional
+from typing import Any, Optional
 import pickle
 from argparse import ArgumentParser
 
@@ -25,7 +55,7 @@ parser.add_argument("--data_root", type=str, default="data/")
 if __name__ == "__main__":
     # CLI arguments parsing
     args = parser.parse_args()
-    with open("config/"+args.config, "r") as f:
+    with open("config/" + args.config, "r") as f:
         payload = yaml.safe_load(f)
     headers = {"Authorization": f"Bearer {payload["accessJwt"]}"}
     print(headers)
@@ -36,20 +66,24 @@ if __name__ == "__main__":
         prefix = args.query.split()[0]
 
     # 設定
-    params = {"q": args.query, "limit":args.limit, "cursor": None, }
+    params = {
+        "q": args.query,
+        "limit": args.limit,
+        "cursor": None,
+    }
     data_root = "data/"
 
     # 初期化
     all_posts: list[dict[str, Any]] = []
     cursor = None
     start_index = 0
-    
+
     # データ取得
     while True:
         if cursor:
             payload["cursor"] = cursor
         response = requests.get(searchPosts_endpoint, headers=headers, params=params)
-        
+
         if response.status_code != 200:
             data = response.json()
             print(f"エラーが発生しました: {data.get('error', '不明なエラー')}")
@@ -80,12 +114,10 @@ if __name__ == "__main__":
 
     with open(path, "wb") as f:
         pickle.dump(payload, f)
-    print("最後のカーソルを含めたペイロードを保存しました：",path)
+    print("最後のカーソルを含めたペイロードを保存しました：", path)
 
-    if cursor is not None:            
+    if cursor is not None:
         path = f"{data_root}/{prefix}_cursor.txt"
         with open(path, "w") as f:
             f.write(cursor)
-        print("最後のカーソルを保存しました：",path)
-
-    
+        print("最後のカーソルを保存しました：", path)
