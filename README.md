@@ -36,7 +36,7 @@ $ rye run python script/keyword_extraction.py "柔道 since:2024-07-26T00:00:00 
 あとは放置するだけ．
 
 #### 注意
-[bskyの検索クエリの書き方をまとめてくださっている記事](https://statics.teams.cdn.office.net/evergreen-assets/safelinks/1/atp-safelinks.html)に，`sort`というキーワードが示されていた．これを利用するとポストを収集できないので注意．
+[bskyの検索クエリの書き方をまとめてくださっている記事](https://scrapbox.io/Bluesky/%E6%A4%9C%E7%B4%A2%E3%82%AF%E3%82%A8%E3%83%AA)に，`sort`というキーワードが示されていた．これを利用するとポストを収集できないので注意．
 
 ### すべてのポストを収集する
 w.i.p.
