@@ -57,7 +57,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     with open("config/" + args.config, "r") as f:
         payload = yaml.safe_load(f)
-    headers = {"Authorization": f"Bearer {payload["accessJwt"]}"}
+    headers = {"Authorization": f"Bearer {payload['accessJwt']}"}
     print(headers)
     print("クエリー：", args.query)
     if args.prefix:
@@ -78,10 +78,10 @@ if __name__ == "__main__":
     cursor = None
     start_index = 0
 
-    # データ取得
+ # データ取得
     while True:
         if cursor:
-            payload["cursor"] = cursor
+            params["cursor"]  = cursor 
         response = requests.get(searchPosts_endpoint, headers=headers, params=params)
 
         if response.status_code != 200:
@@ -93,6 +93,11 @@ if __name__ == "__main__":
         posts = data.get("posts", [])
         all_posts.extend(posts)
         print(f"{len(posts)}件の投稿を取得しました。")
+
+        cursor = data.get("cursor")
+        print(f"カーソル: {cursor}")
+        if not cursor:
+            break
 
         if len(all_posts) >= 1000:
             n_items = len(all_posts)
