@@ -87,6 +87,7 @@ if __name__ == "__main__":
         if response.status_code != 200:
             data = response.json()
             print(f"エラーが発生しました: {data.get('error', '不明なエラー')}")
+            print(f"ステータスコード: {response.status_code}")
             break
 
         data = response.json()

@@ -12,10 +12,10 @@ $ ls
  config   data   pyproject.toml   README.md   requirements-dev.lock   requirements.lock   script   src
 ```
 
-### ryeで開発環境を同期する
-Pythonのパッケージマネージャとして[rye](https://rye.astral.sh/)を利用しています．適宜[uv](https://docs.astral.sh/uv/)などに変更してもらっても大丈夫です．
+### uvで開発環境を同期する
+Pythonのパッケージマネージャとして[uv](https://docs.astral.sh/uv/)を利用します．（以前は[rye](https://rye.astral.sh/)を利用していましたが，修正しました．）
 ```sh
-$ rye sync
+$ uv sync
 ```
 ### 任意のアカウントのベアラートークンを作成する
 ```sh
@@ -30,7 +30,7 @@ $ rye run python script/get_accessJwt.py メールアドレス パスワード
 
 例えばhogeアカウントで作成したベアラートークンを用いて，`柔道 since:2024-07-26T00:00:00 until:2024-08-12T00:00:00`を検索する場合：
 ```sh
-$ rye run python script/keyword_extraction.py "柔道 since:2024-07-26T00:00:00 until:2024-08-12T00:00:00" --config hoge.yaml
+$ uv run script/keyword_extraction.py "柔道 since:2024-07-26T00:00:00 until:2024-08-12T00:00:00" --config hoge.yaml
 ```
 
 あとは放置するだけ．

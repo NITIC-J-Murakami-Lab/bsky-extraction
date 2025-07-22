@@ -2,32 +2,15 @@
 name = "bsky-extraction"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "rsimd", email = "rickysimd@gmail.com" }
-]
-dependencies = [
-    "requests>=2.32.3",
-    "atproto>=0.0.56",
-    "jupyter>=1.1.1",
-    "pandas>=2.2.3",
-    "tqdm>=4.67.1",
-    "pyyaml>=6.0.2",
-]
 readme = "README.md"
-requires-python = ">= 3.8"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "ipython>=8.29.0",
+requires-python = ">=3.12.2"
+dependencies = [
+    "atproto>=0.0.61",
+    "bertopic>=0.17.3",
+    "jupyter>=1.1.1",
+    "pandas>=2.3.1",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.4",
+    "scikit-learn>=1.7.1",
+    "tqdm>=4.67.1",
 ]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/bsky_extraction"]
