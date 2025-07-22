@@ -19,7 +19,7 @@ $ uv sync
 ```
 ### 任意のアカウントのベアラートークンを作成する
 ```sh
-$ rye run python script/get_accessJwt.py メールアドレス パスワード
+$ uv run script/get_accessJwt.py メールアドレス パスワード
 ```
 ベアラートークンを組めたコンフィグファイルは`./config`の下に保存される．
 `./config/hogehoge.yaml`のようなファイルが作成されているはずです．適宜短いファイル名に修正してください．
